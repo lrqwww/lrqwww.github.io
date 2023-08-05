@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Games101-03 Rasterization光栅化 | 五里霧中</title><meta name="keywords" content="图形学"><meta name="author" content="RuiKi"><meta name="copyright" content="RuiKi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="光栅化  M 模型转换（放置对象）  V 视图转换（放置摄像头）  P 投影转换  正投影（长方体到标准立方体[-1,1]^3） 透视投影（截锥体到标准立方体）  之后标准立方体映射到屏幕，光栅化就是画在屏幕上的过程，光栅化&#x3D;样本的2D位置    规范立方体到屏幕： 与z值无关，原尺寸(-1, 1)^2通过拉伸平移转换为[0,width]\times[0,height] 表示为：即（2,2）→（w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Games101-03 Rasterization光栅化">
+<meta property="og:url" content="https://lrqwww.github.io/2022/08/30/Games101-03/index.html">
+<meta property="og:site_name" content="五里霧中">
+<meta property="og:description" content="光栅化  M 模型转换（放置对象）  V 视图转换（放置摄像头）  P 投影转换  正投影（长方体到标准立方体[-1,1]^3） 透视投影（截锥体到标准立方体）  之后标准立方体映射到屏幕，光栅化就是画在屏幕上的过程，光栅化&#x3D;样本的2D位置    规范立方体到屏幕： 与z值无关，原尺寸(-1, 1)^2通过拉伸平移转换为[0,width]\times[0,height] 表示为：即（2,2）→（w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lrqwww.github.io/img/covers/games101.png">
+<meta property="article:published_time" content="2022-08-30T15:05:38.000Z">
+<meta property="article:modified_time" content="2022-08-30T16:45:46.340Z">
+<meta property="article:author" content="RuiKi">
+<meta property="article:tag" content="图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lrqwww.github.io/img/covers/games101.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lrqwww.github.io/2022/08/30/Games101-03/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Games101-03 Rasterization光栅化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-31 00:45:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/covers/games101.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">五里霧中</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Games101-03 Rasterization光栅化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-30T15:05:38.000Z" title="发表于 2022-08-30 23:05:38">2022-08-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-30T16:45:46.340Z" title="更新于 2022-08-31 00:45:46">2022-08-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Games101-03 Rasterization光栅化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h1><blockquote>
+<ul>
+<li><p><strong>M</strong> 模型转换（放置对象）</p>
+</li>
+<li><p><strong>V</strong> 视图转换（放置摄像头）</p>
+</li>
+<li><p><strong>P</strong> 投影转换</p>
+</li>
+<li>正投影（长方体到标准立方体<script type="math/tex">[-1,1]^3</script>）</li>
+<li>透视投影（截锥体到标准立方体）</li>
+</ul>
+<p>之后标准立方体映射到屏幕，光栅化就是画在屏幕上的过程，<code>光栅化=样本的2D位置</code></p>
+</blockquote>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828160849.png" alt="QQ截图20220828160849" style="zoom:67%;"></p>
+<ul>
+<li><p><strong>规范立方体到屏幕</strong>：</p>
+<p>与z值无关，原尺寸<script type="math/tex">(-1, 1)^2</script>通过拉伸平移转换为<script type="math/tex">[0,width]\times[0,height]</script></p>
+<p>表示为：即（2,2）→（width，height）</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+M_{viewport}=\left(\begin{matrix}
+\frac{width}{2}&0&0&\frac{width}{2}\\
+0&\frac{height}{2}&0&\frac{height}{2}\\
+0&0&1&0\\
+0&0&0&1\\
+\end{matrix}\right)     先拉伸原尺寸/2，再平移</script><hr>
+<h1 id="光栅显示：三角形"><a href="#光栅显示：三角形" class="headerlink" title="光栅显示：三角形"></a>光栅显示：三角形</h1><blockquote>
+<p>只考虑（x,y）的话，多边形网格（Polygon Meshes）构成模型表面，每一个多边形可以拆分成不同像素的三角形网格（Triangle Meshes）</p>
+</blockquote>
+<p><strong>三角形</strong>：基本形状单元</p>
+<ul>
+<li>最基础多边形，可以分解其他多边形，</li>
+<li><strong>特点</strong>：<ul>
+<li>保证是平面，三点都在内部</li>
+<li>定义良好的内部，内外清晰</li>
+<li>三角形顶点处差值有利于定于良好的方法</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Input：输入一个三角形投影在屏幕上的位置（三个顶点可能都在像素点内部，像素格取舍问题）</p>
+<p>Output’：一组近似三角形的像素值（边缘或顶点在像素格所占比例）</p>
+<p><strong>如何输出一组近似三角形的像素值？</strong></p>
+</blockquote>
+<hr>
+<h1 id="Sampling-采样"><a href="#Sampling-采样" class="headerlink" title="Sampling 采样"></a>Sampling 采样</h1><p><strong>采样</strong>：对一个函数在某一点求值就是抽样。我们可以通过抽样来离散一个函数。    </p>
+<ul>
+<li>对三角形所占最多像素点遍历，若像素点中心在三角形内就取该像素点</li>
+</ul>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828163942.png" alt="QQ截图20220828163942" style="zoom: 67%;"></p>
+<ul>
+<li>表示方法<script type="math/tex; mode=display">
+inside(t,x,y)=\begin{cases}
+1& \text{Point(x,y) in trangle t }  \\
+0& \text{otherwise}\\
+\end{cases}</script></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">0</span>; i &lt; xmax; x++)</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> y = <span class="number">0</span>; y &lt; ymax; y++)</span><br><span class="line">        image[x][y] = inside(tri,x+<span class="number">0.5</span>,y+<span class="number">0.5</span>);	<span class="comment">//(x+0.5,y+0.5)为中心位置</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算像素点在三角形内外：通过<strong>向量叉积</strong></li>
+</ul>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828164838.png" alt="QQ截图20220828164838" style="zoom: 50%;"></p>
+<ul>
+<li><strong>包围盒</strong>：减少采样点，以三角形三个点画出的矩形就是包围盒（Bounding Box），不需要检查屏幕上所有像素点</li>
+</ul>
+<blockquote>
+<p>然而，这种方法在实际光珊化后，会产生<strong>锯齿</strong>（Antialiasing）：</p>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828165315.png" alt="QQ截图20220828165315" style="zoom:50%;"></p>
+</blockquote>
+<hr>
+<h1 id="Antialiasing-抗锯齿"><a href="#Antialiasing-抗锯齿" class="headerlink" title="Antialiasing 抗锯齿"></a>Antialiasing 抗锯齿</h1><h2 id="采样问题分析"><a href="#采样问题分析" class="headerlink" title="采样问题分析"></a>采样问题分析</h2><ul>
+<li>采样数量少：出现锯齿</li>
+<li>间隔采样：摩尔纹情况</li>
+<li>采样不及时：车轮错觉等</li>
+</ul>
+<p><strong>出现原因</strong>：<strong><script type="math/tex">\textcolor{red}{信号变化太快，采样速度跟不上}</script></strong></p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ul>
+<li><p>由于锯齿是由于边缘不是红色就是白色，采取<strong>先模糊再采样</strong>的方法，即三角形边缘值取中间值</p>
+<p><strong>注</strong>：只有先滤波再采样才可以，反之也会出现错误</p>
+</li>
+</ul>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828172514.png" alt="QQ截图20220828172514"></p>
+<blockquote>
+<p>深度原因是因为频域发生重叠</p>
+</blockquote>
+<h2 id="频域和卷积"><a href="#频域和卷积" class="headerlink" title="频域和卷积"></a>频域和卷积</h2><ul>
+<li><p><strong>傅里叶变换</strong>：任何波都可以用正弦余弦表示，由空域转换为频域</p>
+<p><strong><script type="math/tex">\textcolor{red}{采样与频率有关，频率高变化大需要高采样率}</script></strong></p>
+<ul>
+<li>低频信号：采样充分，重构合理</li>
+<li>高频信号采样不足：重构错误地出现在低频信号上</li>
+</ul>
+<p><strong><script type="math/tex">\textcolor{red}{在给定的采样率下无法区分的两个频率}</script></strong></p>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220828181239.png" alt="QQ截图20220828181239"></p>
+</li>
+<li><p><strong>滤波</strong>：删除某个特定频率端，去掉某个频率的信息平均下来也就是<strong>卷积</strong></p>
+</li>
+<li><p><strong>卷积</strong>：通过滤波器（卷积核）滑动处理每一个像素，平均后的结果。滤波器越小，频率留下的越多；滤波器越大，频率留下的越少，图像越模糊。</p>
+</li>
+</ul>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220829000317.png" alt="QQ截图20220829000317"></p>
+<ul>
+<li><p>因此，采样是为了复原原信号的频率。若采样不够快，会出现频谱混叠</p>
+<ul>
+<li>增大采样率：通过高采样率，增加频谱间的间隔；但高分辨率的情况下消耗也会变大</li>
+<li>抗锯齿：即先模糊再采样，例如先通过低通滤波过滤掉高频信号再采样，计算每个像素内部平均值</li>
+</ul>
+<p><img src="/2022/08/30/Games101-03/QQ截图20220829004038.png" alt="QQ截图20220829004038"></p>
+</li>
+<li><p>其他采样方法：超采样（MASS），通过在一个像素内的多个位置采样并平均它们的值来近似1像素盒滤波器的效果</p>
+<ul>
+<li>临近复制，MSAA找上一帧信息，分布在时域上</li>
+</ul>
+</li>
+</ul>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io">RuiKi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io/2022/08/30/Games101-03/">https://lrqwww.github.io/2022/08/30/Games101-03/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lrqwww.github.io" target="_blank">五里霧中</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a></div><div class="post_share"><div class="social-share" data-image="/img/covers/games101.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/30/Games101-04/"><img class="prev-cover" src="/img/covers/games101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Games101-04 Shading着色</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/30/Games101-02/"><img class="next-cover" src="/img/covers/games101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Games101-02 Transformation变换</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/08/30/Games101-02/" title="Games101-02 Transformation变换"><img class="cover" src="/img/covers/games101.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-30</div><div class="title">Games101-02 Transformation变换</div></div></a></div><div><a href="/2022/08/30/Games101-04/" title="Games101-04 Shading着色"><img class="cover" src="/img/covers/games101.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-30</div><div class="title">Games101-04 Shading着色</div></div></a></div><div><a href="/2022/07/16/Games101%E7%AC%94%E8%AE%B0/" title="Games101-01线代基础"><img class="cover" src="/img/covers/games101.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-16</div><div class="title">Games101-01线代基础</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%89%E6%A0%85%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">光栅化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%89%E6%A0%85%E6%98%BE%E7%A4%BA%EF%BC%9A%E4%B8%89%E8%A7%92%E5%BD%A2"><span class="toc-number">2.</span> <span class="toc-text">光栅显示：三角形</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Sampling-%E9%87%87%E6%A0%B7"><span class="toc-number">3.</span> <span class="toc-text">Sampling 采样</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Antialiasing-%E6%8A%97%E9%94%AF%E9%BD%BF"><span class="toc-number">4.</span> <span class="toc-text">Antialiasing 抗锯齿</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%87%E6%A0%B7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">采样问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%91%E5%9F%9F%E5%92%8C%E5%8D%B7%E7%A7%AF"><span class="toc-number">4.3.</span> <span class="toc-text">频域和卷积</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/img/covers/games101.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By RuiKi</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    //tex: {
+    //  inlineMath: [ ['$','$'], ["\\(","\\)"]],
+    //  tags: 'ams'
+    //},
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

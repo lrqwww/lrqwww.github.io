@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Tips | 五里霧中</title><meta name="keywords" content="Unity3D,C#"><meta name="author" content="RuiKi"><meta name="copyright" content="RuiKi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="代码习惯C# 格式 全局变量：_newList 临时变量：newlist 函数：UpdateList（） 静态变量：NewList  用 foreach 而不是 for 去遍历善用 GetComponentsInChild 用 GetChild更容易受到美术调整的影响  Bugunity 空引用异常 From大佬：Unity基本百分之90的报错都是 NullReferenceException:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tips">
+<meta property="og:url" content="https://lrqwww.github.io/2023/08/06/Tips/index.html">
+<meta property="og:site_name" content="五里霧中">
+<meta property="og:description" content="代码习惯C# 格式 全局变量：_newList 临时变量：newlist 函数：UpdateList（） 静态变量：NewList  用 foreach 而不是 for 去遍历善用 GetComponentsInChild 用 GetChild更容易受到美术调整的影响  Bugunity 空引用异常 From大佬：Unity基本百分之90的报错都是 NullReferenceException:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lrqwww.github.io/img/covers/Tips.jpg">
+<meta property="article:published_time" content="2023-08-05T19:05:58.000Z">
+<meta property="article:modified_time" content="2023-08-05T19:55:09.147Z">
+<meta property="article:author" content="RuiKi">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lrqwww.github.io/img/covers/Tips.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lrqwww.github.io/2023/08/06/Tips/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Tips',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-06 03:55:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/covers/Tips.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">五里霧中</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Tips</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-05T19:05:58.000Z" title="发表于 2023-08-06 03:05:58">2023-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-05T19:55:09.147Z" title="更新于 2023-08-06 03:55:09">2023-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">知识总结</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Tips"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="代码习惯"><a href="#代码习惯" class="headerlink" title="代码习惯"></a>代码习惯</h1><h2 id="C-格式"><a href="#C-格式" class="headerlink" title="C# 格式"></a>C# 格式</h2><ul>
+<li>全局变量：_newList</li>
+<li>临时变量：newlist</li>
+<li>函数：UpdateList（）</li>
+<li>静态变量：NewList</li>
+</ul>
+<h2 id="用-foreach-而不是-for-去遍历"><a href="#用-foreach-而不是-for-去遍历" class="headerlink" title="用 foreach 而不是 for 去遍历"></a>用 foreach 而不是 for 去遍历</h2><h2 id="善用-GetComponentsInChild"><a href="#善用-GetComponentsInChild" class="headerlink" title="善用 GetComponentsInChild"></a>善用 GetComponentsInChild</h2><ul>
+<li>用 <code>GetChild</code>更容易受到美术调整的影响</li>
+</ul>
+<h1 id="Bug"><a href="#Bug" class="headerlink" title="Bug"></a>Bug</h1><h2 id="unity-空引用异常"><a href="#unity-空引用异常" class="headerlink" title="unity 空引用异常"></a>unity 空引用异常</h2><blockquote>
+<p>From大佬：Unity基本百分之90的报错都是 <code>NullReferenceException: Object reference not set to an instance of an object</code>，非常容易碰到了属于是，不过能复现出来的话这类貌似是最好解决的</p>
+<ul>
+<li>断点断到位置的每个变量都可能为空，包括被赋值的对象，这个对象的组件，赋值的值，均需要检查</li>
+<li>提前加保护：判断若未空则返回 <code>if (x == null) return</code></li>
+</ul>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>空引用</td>
+<td>断点找到空引用位置，可能是组件可能是对象</td>
+</tr>
+<tr>
+<td>对象名字写错</td>
+<td>包括大小写，<strong>末尾的空格</strong>，名字写错</td>
+</tr>
+<tr>
+<td>对象隐藏</td>
+<td>设置sective</td>
+</tr>
+<tr>
+<td>名字重名</td>
+<td>没遇到过，一般不运行就会直接报错吧</td>
+</tr>
+<tr>
+<td>错误的引用周期</td>
+<td><code>Start</code>时引用到了另一个脚本未<code>Start</code>的脚本，将被引用的放到<code>Awake</code>里</td>
+</tr>
+</tbody>
+</table>
+</div>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io">RuiKi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io/2023/08/06/Tips/">https://lrqwww.github.io/2023/08/06/Tips/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lrqwww.github.io" target="_blank">五里霧中</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity3D/">Unity3D</a><a class="post-meta__tags" href="/tags/C/">C#</a></div><div class="post_share"><div class="social-share" data-image="/img/covers/Tips.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/06/UGUI%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6/"><img class="prev-cover" src="/img/covers/Unity.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">UGUI常用组件</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/06/Dotween%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/"><img class="next-cover" src="/img/covers/Dotween.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Dotween常用方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/" title="C# Unity官方笔记"><img class="cover" src="/img/covers/Csharp.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">C# Unity官方笔记</div></div></a></div><div><a href="/2023/04/13/Unity%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E5%A7%94%E6%89%98/" title="Unity中的事件和委托"><img class="cover" src="/img/covers/event.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-13</div><div class="title">Unity中的事件和委托</div></div></a></div><div><a href="/2023/04/13/Unity%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F/" title="Unity异步加载方式"><img class="cover" src="/img/covers/ayscn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-13</div><div class="title">Unity异步加载方式</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%8A%9F%E8%83%BD08-U%E5%9C%BA%E6%99%AF%E8%BD%AC%E6%8D%A2%E4%B8%8E%E4%BC%A0%E9%80%81/" title="3DRPG游戏开发核心功能08-场景转换与传送"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能08-场景转换与传送</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD02-%E9%BC%A0%E6%A0%87%E6%8E%A7%E5%88%B6%E5%92%8C%E7%9B%B8%E6%9C%BA%E7%89%B9%E6%95%88/" title="3DRPG游戏开发核心功能02-鼠标控制和相机特效"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能02-鼠标控制和相机特效</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD03-%E6%95%8C%E4%BA%BA%E5%8F%8A%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6/" title="3DRPG游戏开发核心功能03-敌人及玩家控制"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能03-敌人及玩家控制</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%B9%A0%E6%83%AF"><span class="toc-number">1.</span> <span class="toc-text">代码习惯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">C# 格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8-foreach-%E8%80%8C%E4%B8%8D%E6%98%AF-for-%E5%8E%BB%E9%81%8D%E5%8E%86"><span class="toc-number">1.2.</span> <span class="toc-text">用 foreach 而不是 for 去遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%96%84%E7%94%A8-GetComponentsInChild"><span class="toc-number">1.3.</span> <span class="toc-text">善用 GetComponentsInChild</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bug"><span class="toc-number">2.</span> <span class="toc-text">Bug</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#unity-%E7%A9%BA%E5%BC%95%E7%94%A8%E5%BC%82%E5%B8%B8"><span class="toc-number">2.1.</span> <span class="toc-text">unity 空引用异常</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/img/covers/Tips.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By RuiKi</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    //tex: {
+    //  inlineMath: [ ['$','$'], ["\\(","\\)"]],
+    //  tags: 'ams'
+    //},
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C# Unity官方笔记 | 五里霧中</title><meta name="keywords" content="Unity3D,C#"><meta name="author" content="RuiKi"><meta name="copyright" content="RuiKi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="From：Unity官网C#初级编程 ​              Unity官网C#中级编程 脚本 Scripts作为 behavior component （行为组件），用于 Object，不同对象的不同行为  Start &amp; Awake    Awake Start     初始化之前，脚本不启用也会初始化 Awake 之后，首次 Updata 之前，脚本启用才会初始化      P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# Unity官方笔记">
+<meta property="og:url" content="https://lrqwww.github.io/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="五里霧中">
+<meta property="og:description" content="From：Unity官网C#初级编程 ​              Unity官网C#中级编程 脚本 Scripts作为 behavior component （行为组件），用于 Object，不同对象的不同行为  Start &amp; Awake    Awake Start     初始化之前，脚本不启用也会初始化 Awake 之后，首次 Updata 之前，脚本启用才会初始化      P">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lrqwww.github.io/img/covers/Csharp.png">
+<meta property="article:published_time" content="2022-08-17T19:16:53.000Z">
+<meta property="article:modified_time" content="2022-08-17T19:20:20.204Z">
+<meta property="article:author" content="RuiKi">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lrqwww.github.io/img/covers/Csharp.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lrqwww.github.io/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C# Unity官方笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-18 03:20:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/covers/Csharp.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">五里霧中</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C# Unity官方笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-17T19:16:53.000Z" title="发表于 2022-08-18 03:16:53">2022-08-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-17T19:20:20.204Z" title="更新于 2022-08-18 03:20:20">2022-08-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C# Unity官方笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>From：<a href="【[Unity中文课堂教程预告片] C#初级编程】 https://www.bilibili.com/video/BV1oy4y1q7jJ?share_source=copy_web&amp;vd_source=d83ce8fdf322bae01b4efc0e4798d0b9">Unity官网C#初级编程</a></p>
+<p>​              <a href="【[Unity中文课堂教程预告片] C#中级编程】 https://www.bilibili.com/video/BV1f5411G7bp?p=17&amp;share_source=copy_web&amp;vd_source=d83ce8fdf322bae01b4efc0e4798d0b9">Unity官网C#中级编程</a></p>
+<h1 id="脚本-Scripts"><a href="#脚本-Scripts" class="headerlink" title="脚本 Scripts"></a>脚本 Scripts</h1><p>作为 behavior component （行为组件），用于 Object，不同对象的不同行为</p>
+<hr>
+<h1 id="Start-amp-Awake"><a href="#Start-amp-Awake" class="headerlink" title="Start &amp; Awake"></a>Start &amp; Awake</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Awake</th>
+<th>Start</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化之前，脚本不启用也会初始化</td>
+<td>Awake 之后，首次 Updata 之前，脚本启用才会初始化</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="Public-amp-Private-amp-Protected"><a href="#Public-amp-Private-amp-Protected" class="headerlink" title="Public &amp; Private &amp; Protected"></a>Public &amp; Private &amp; Protected</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Public</th>
+<th>Private</th>
+<th>Protected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类外（其他脚本）可以访问</td>
+<td>只允许类内访问，默认私有</td>
+<td>允许子类访问</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="Updata-amp-FixedUpdata"><a href="#Updata-amp-FixedUpdata" class="headerlink" title="Updata &amp; FixedUpdata"></a>Updata &amp; FixedUpdata</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Updata</th>
+<th>FixedUpdata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用的脚本每帧调用一次，调用间隔不同，非物理相关</td>
+<td>固定时间，间隔相同调用，每秒调用50次，用于物理（Rigibody）相关函数，力相关</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;Updata Time: &quot;</span> + Time.deltaTime);    <span class="comment">// Time.deltaTime 每帧增加的间隔时间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FixedUpdate</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;FixedUpdata Time: &quot;</span> + Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#结果</span></span><br><span class="line">Updata Time: <span class="number">0.0023467</span>	<span class="number">0.0023239</span> ……</span><br><span class="line">FixedUpdata Time: <span class="number">0.02</span>	<span class="number">0.02</span>  <span class="number">0.02</span> ……</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="DeltaTime"><a href="#DeltaTime" class="headerlink" title="DeltaTime"></a>DeltaTime</h1><blockquote>
+<p>Time 类的 DeltaTime 用于计算两次更新或固定函数调用的间隔时长，用于移动或其他增量变化变得平滑</p>
+<p>因为完成一帧的时长是不一致的，按完成每帧做速率会不平滑</p>
+<p>Speed * Time.deltaTime 用于速率恒定</p>
+</blockquote>
+<hr>
+<h1 id="Invoke"><a href="#Invoke" class="headerlink" title="Invoke"></a>Invoke</h1><blockquote>
+<p>延迟执行</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> GameObject target;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Invoke(<span class="string">&quot;SpawObject&quot;</span>, <span class="number">2</span>);	<span class="comment">// 2s后实例化出target</span></span><br><span class="line">    InvokeRepeating(<span class="string">&quot;SpawObject&quot;</span>, <span class="number">2</span>, <span class="number">1</span>);	<span class="comment">// 2s后实例化出target，生成后间隔为1秒	</span></span><br><span class="line">    </span><br><span class="line">    CancelInvoke(<span class="string">&quot;SpawObject&quot;</span>);		<span class="comment">// 取消循环</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SpawObject</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> x = Random.Range(<span class="number">-2f</span>, <span class="number">2f</span>);	<span class="comment">// Random 随机n Range 范围n</span></span><br><span class="line">    Instantiate(target, <span class="keyword">new</span> Vector(<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>), Quaternion.identity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="点积-amp-叉积"><a href="#点积-amp-叉积" class="headerlink" title="点积 &amp; 叉积"></a>点积 &amp; 叉积</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Dot 点积</th>
+<th>Cross 叉积</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>计算得到数值，==0为垂直，可用于飞机飞行方向判断</td>
+<td>计算得到矩阵，可用于炮塔朝向</td>
+</tr>
+<tr>
+<td>Vector3. Dot (VectorA, VectorB)</td>
+<td>Vector3. Cross (VectorA, VectorB)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/1.png" alt="1"></p>
+<hr>
+<h1 id="启动组件"><a href="#启动组件" class="headerlink" title="启动组件"></a>启动组件</h1><blockquote>
+<p>Inspector 窗口 -&gt;组件前面的勾</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Component.enabled = <span class="literal">false</span> <span class="keyword">or</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LightEnable</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> Light pointLight;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Start is called before the first frame update</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        pointLight = GetComponent&lt;Light&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetKeyUp(KeyCode.Space))  <span class="comment">// GetKeyUp 按下弹起算一次</span></span><br><span class="line">            pointLight.enabled = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="启用对象"><a href="#启用对象" class="headerlink" title="启用对象"></a>启用对象</h1><blockquote>
+<p>Hierarchy 窗口 -&gt; GameObject 是否开启</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;gameObject.SetActive(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<hr>
+<h1 id="Translate-amp-Rotate"><a href="#Translate-amp-Rotate" class="headerlink" title="Translate &amp; Rotate"></a>Translate &amp; Rotate</h1><blockquote>
+<p>平移和旋转：针对局部坐标（Local axis）</p>
+<p>Vector3. forward and Vector3. Up 都是局部坐标 </p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TransformObject</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> moveSpeed = <span class="number">10f</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> turnSpeed = <span class="number">50f</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetKey(KeyCode.UpArrow))  <span class="comment">// GetKey 长按</span></span><br><span class="line">            transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);  <span class="comment">// 作用于 Local axis 局部坐标</span></span><br><span class="line">        <span class="keyword">if</span> (Input.GetKey(KeyCode.DownArrow))</span><br><span class="line">            transform.Translate(-Vector3.forward * Time.deltaTime * moveSpeed);</span><br><span class="line">        <span class="keyword">if</span> (Input.GetKey(KeyCode.LeftArrow))</span><br><span class="line">            transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);  <span class="comment">// up表示哪个轴</span></span><br><span class="line">        <span class="keyword">if</span> (Input.GetKey(KeyCode.RightArrow))</span><br><span class="line">            transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="LookAt"><a href="#LookAt" class="headerlink" title="LookAt"></a>LookAt</h1><blockquote>
+<p>GameObject 的 forward 指向世界坐标（World axis）的另一个transform</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 摄像机看向目标</span></span><br><span class="line">    Transform target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        transform.LookAt(target);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Destory"><a href="#Destory" class="headerlink" title="Destory"></a>Destory</h1><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 销毁对象or组件，第二个参数为延时（delay）</span></span><br><span class="line">Destory(GameObject, <span class="number">3f</span>);</span><br><span class="line">Destory(GetComponent&lt;MeshRenderer&gt;());</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="GetButton-amp-GetKey"><a href="#GetButton-amp-GetKey" class="headerlink" title="GetButton &amp; GetKey"></a>GetButton &amp; GetKey</h1><ul>
+<li><p>GetButton：输入管理器 Project Setting -&gt; Input 设置按键，string 类型传入按键名</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> Up = Input.GetButtonUp(<span class="string">&quot;Jump&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>GetKey：GetKey(KeyCode. X) 具体指定按键</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> crouch = Input.GetKey(KeyCode.S)			<span class="comment">//长按</span></span><br><span class="line">Input.GetKeyUp(KeyCode.S)						<span class="comment">//按下弹起一次后触发</span></span><br><span class="line">Input.GetKeydown(KeyCode.S)						<span class="comment">//按下就触发</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h1 id="OnMouseDown"><a href="#OnMouseDown" class="headerlink" title="OnMouseDown"></a>OnMouseDown</h1><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 判断鼠标点击</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnMouseDown</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">	rb.AddForce(-transform.forward * <span class="number">500f</span>);	<span class="comment">//鼠标点击推出物体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h1><blockquote>
+<p>面向对象编程：将脚本拆分成多个脚本，每一个脚本承担一个角色或指责</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class School: MonoBehavior</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> studentCout;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> teacherCout;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> bookCout;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> avgNum;</span><br><span class="line">    <span class="comment">// 构造函数，与类同名，可以重载，不需要返回值，构造函数用于初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">School</span>(<span class="params"><span class="built_in">int</span> a, <span class="built_in">int</span> b, <span class="built_in">int</span> c</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        studentCout = a;</span><br><span class="line">        teacherCout = b;</span><br><span class="line">        bookCout = c;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">School</span>(<span class="params"><span class="built_in">int</span> a, <span class="built_in">float</span> avg</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        student = a;</span><br><span class="line">        avgNum = avg;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">School</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        studentCout = <span class="number">1</span>;</span><br><span class="line">        teacherCout = <span class="number">1</span>;</span><br><span class="line">        bookCout = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 实例化</span></span><br><span class="line">    <span class="keyword">public</span> School dogSchool = <span class="keyword">new</span> School(<span class="number">10</span>, <span class="number">100</span>, <span class="number">1000</span>);</span><br><span class="line">    <span class="keyword">public</span> School catSchool = <span class="keyword">new</span> School(<span class="number">20</span>, <span class="number">50.5f</span>);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Instantiate"><a href="#Instantiate" class="headerlink" title="Instantiate"></a>Instantiate</h1><blockquote>
+<p>Instantiate 用于克隆 gameObject，常用于克隆 Prefabs，即预配置对象</p>
+<p>例如抛射出的物体</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;Instantiate(<span class="built_in">object</span>);	<span class="comment">// 参数为想克隆的对象</span></span><br><span class="line">&gt;Instantiate(<span class="built_in">object</span>, position, rotation);	<span class="comment">// 指定位置和角度</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<hr>
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>[] myIntArray = <span class="keyword">new</span> <span class="built_in">int</span> [<span class="number">3</span>];</span><br><span class="line">myIntArray[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">myIntArray[<span class="number">1</span>] = <span class="number">2</span>;</span><br><span class="line">myIntArray[<span class="number">2</span>] = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">int</span>[] myInyArray = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><blockquote>
+<p>列出枚举值，定义变量，选择枚举值给变量赋值</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">enum</span> Direction &#123;North, East, South, West&#125;;	<span class="comment">// 枚举 Direction 类型的4个值</span></span><br><span class="line">Direction myDirection;	<span class="comment">// Direction 类型的变量 myDirection，值为4选1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    myDirection = Directio.North;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h1><blockquote>
+<p>更简洁的选择语句，避免选择多时代码变得冗长</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NPC等级不同对白不同可用Switch</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SwitchText</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设定最高智慧</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> intelligence = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Greet</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">switch</span>(intelligence)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">                print(<span class="string">&quot;Nice to meet u!&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;		<span class="comment">// break跳出循环</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                print(<span class="string">&quot;Hello!&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                print(<span class="string">&quot;ababababa&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                print(<span class="string">&quot;0100010010&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="literal">default</span>:                <span class="comment">// 类似于else 未讨论到情况</span></span><br><span class="line">                print(<span class="string">&quot;Aroha!&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><blockquote>
+<p>对私有变量建立属性，其他类可以通过属性访问</p>
+<ol>
+<li>通过 get 和 set 的保留设置只读或只写</li>
+<li>可以当做函数使用</li>
+</ol>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Player</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> experience; <span class="comment">// 私有变量经验</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Experience</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> <span class="comment">// get必须有返回值，读</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> experience;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 前面可以加函数，写</span></span><br><span class="line">            experience = <span class="keyword">value</span>; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 简写</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Health &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调用</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 先生成实例再访问</span></span><br><span class="line">    Player myPlayer = <span class="keyword">new</span> Player();</span><br><span class="line"></span><br><span class="line">    myPlayer.Experience = <span class="number">5</span>;</span><br><span class="line">    <span class="built_in">int</span> x = myPlayer.Experience;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="三目运算符"><a href="#三目运算符" class="headerlink" title="三目运算符"></a>三目运算符</h1><blockquote>
+<p>简答的 if-else 关系，执行内容短</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> health = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">string</span> messing;</span><br><span class="line"></span><br><span class="line">messing = health &gt; <span class="number">0</span> ? <span class="string">&quot;Player is alive&quot;</span> : <span class="string">&quot;Player is dead&quot;</span>;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Static-静态"><a href="#Static-静态" class="headerlink" title="Static 静态"></a>Static 静态</h1><blockquote>
+<p>跨类所有成员共享的成员，无需实例化，一个类中静态成员值一样，不可以包含非静态成员</p>
+<p>静态方法属于类，非静态方法属于类的实例</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 计算生成实例 Enemy 数量</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Enemy</span></span><br><span class="line">&#123;</span><br><span class="line">    pubic Static <span class="built_in">int</span> enemyCout = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Enemy&#123; enemyCout++ &#125;;	<span class="comment">// 调用一次数量+1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Game</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Enemy enemy1 = <span class="keyword">new</span> Enemy();</span><br><span class="line">        Enemy enemy2 = <span class="keyword">new</span> Enemy();</span><br><span class="line">        Enemy enemy3 = <span class="keyword">new</span> Enemy();</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">int</span> x = Enemy.enemyCout;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h1><blockquote>
+<p>GetComponent&lt;&gt; 泛型方法，T 表示任何类型</p>
+<p>所有 C# 类隐式从基类继承而来</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 对泛型参数添加限制 where T:  class, struct, new(), MonoBehaviour, IEnumerable	</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">GenericMethod</span>&lt;<span class="title">T</span>&gt;(<span class="params">T param</span>) <span class="keyword">where</span> T: <span class="keyword">class</span>	</span></span><br><span class="line"><span class="function">        <span class="comment">// T 类型方法，返回T类型值，作为基类处理</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> param;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeOtherClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        SomeClass myclass = <span class="keyword">new</span> SomeClass();	<span class="comment">// 实例化</span></span><br><span class="line">        myclass.GenericMethod&lt;<span class="built_in">int</span>&gt;(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><blockquote>
+<p>MonoBehaviour 类有 start、updata 等函数</p>
+<p>eg：BoxCollider 是 Collider 的子类，BoxCollider 是 Collider</p>
+<p>子类调用的父类构造函数是固定的，base()</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Scripts</span>: <span class="title">MonoBehaviour</span>	<span class="comment">// Scripts 类继承自 MonoBehaviour类</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Scripts</span>				<span class="comment">// Scripts 类不继承自任何类</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Overriding"><a href="#Overriding" class="headerlink" title="Overriding"></a>Overriding</h1><blockquote>
+<p>更改子类中父类的方法</p>
+<p>子类中创建函数，两个子类用的父类函数功能不一样</p>
+<p>覆盖父类函数且保留方法的父版本</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 父类 virtual</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Humanoid</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> 	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Yell</span>()	<span class="comment">// 父类用 virtual 定义，可以被子类覆盖</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Play &quot;Yelling Sound&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 派生类1</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Enemy</span>: <span class="title">Humanoid</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Yell</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.Yell();			<span class="comment">// 调用父方法 Play &quot;Yelling Sound&quot;</span></span><br><span class="line">        <span class="comment">// Attract nearby enemies</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 派生类2</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Orc</span>: <span class="title">Enemy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Yell</span>()		<span class="comment">// 派生类的子类也可以覆盖</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.Yell();			<span class="comment">// 调用父方法 Attract nearby enemies</span></span><br><span class="line">        <span class="comment">// Power up nearby orcs</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><blockquote>
+<ul>
+<li><p>子类：子类 is a 父类，一个类只可以继承自一个类</p>
+</li>
+<li><p>接口：类 实现 接口，一个类可以实现多个接口</p>
+</li>
+</ul>
+<p>实现接口的任何类，必须拥有其所有方法和属性</p>
+<p>用于跨多个互不相关的类定义通用功能（继承同一父类没有意义，用接口销毁所有更有效）</p>
+<p>类外声明，一般一个接口一个文件，直接调用实现，不能生成实例，类要声明接口中的函数</p>
+<p>通常大写 I 开头作为接口名字</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># Interface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Ikillable</span>	<span class="comment">// 名字I开头</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Kill</span>()</span>;	<span class="comment">// 类内声明此函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IDamagable</span>&lt;<span class="title">T</span>&gt;	</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Damage</span>(<span class="params">T damageTaken</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数主体与接口互相独立</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># Avatar</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Avatar</span>: <span class="title">MonoBehavior</span>, <span class="title">Ikillable</span>, <span class="title">IDamagable</span>&lt;<span class="title">float</span>&gt;	<span class="comment">// 调用接口传入类型</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Kill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Do kill</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Damage</span>(<span class="params"><span class="built_in">float</span> damageTaken</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Do damage</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Extension-Methods"><a href="#Extension-Methods" class="headerlink" title="Extension Methods"></a>Extension Methods</h1><blockquote>
+<p>用于需要向类添加功能，但不能编辑类</p>
+<p>eg：transform 类不能修改源代码</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># Extension Methods 扩展transform的方法，初始化transform的要求值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span>  <span class="title">ExtensionMethod</span>	<span class="comment">// 静态方法</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ResetTransformation</span>(<span class="params"><span class="keyword">this</span> Transform trans</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        trans.position = Vector3.zero;	<span class="comment">//位置全部清 0</span></span><br><span class="line">        trans.localRotation = Quanternion.identity;</span><br><span class="line">        trans.localScale = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># SomeClass</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeClass</span>: <span class="title">Monobehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        transform.ResetTransformation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><blockquote>
+<p>NameSpace 就像类的容器</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="列表和字典"><a href="#列表和字典" class="headerlink" title="列表和字典"></a>列表和字典</h1><blockquote>
+<p>list 是泛型类</p>
+<p>列表对象. Add（添加） Remove（移除） Insert（插入） Sort（排序）</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># BadGuy</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BadGuy</span>: <span class="title">IComparable</span>&lt;<span class="title">BadGuy</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> power;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BadGuy</span>(<span class="params"><span class="built_in">string</span> newName, <span class="built_in">int</span> newPower</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        name = newName;</span><br><span class="line">        power = newPower;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params">BadGuy other</span>)  <span class="comment">// 比较接口</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (other == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> power - other.power;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>列表</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># SomeClass 创建列表</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeClass</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        List&lt;BadGuy&gt; badguys = <span class="keyword">new</span> List&lt;BadGuy&gt;();  <span class="comment">// 新建存储badguy类型的列表badguys</span></span><br><span class="line">        badguys.Add(<span class="keyword">new</span> BadGuy(<span class="string">&quot;Harry&quot;</span>, <span class="number">50</span>));</span><br><span class="line">        badguys.Add(<span class="keyword">new</span> BadGuy(<span class="string">&quot;Pip&quot;</span>, <span class="number">10</span>));</span><br><span class="line">        badguys.Add(<span class="keyword">new</span> BadGuy(<span class="string">&quot;Tom&quot;</span>, <span class="number">100</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// badguys.Remove Insert Sort</span></span><br><span class="line">        badguys.Sort();</span><br><span class="line">        <span class="keyword">foreach</span> (BadGuy guy <span class="keyword">in</span> badguys)</span><br><span class="line">            print(guy.name + <span class="string">&quot; &quot;</span> + guy.power);</span><br><span class="line">        badguys.Clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>字典</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeClass</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 键值对</span></span><br><span class="line">        Dictionary&lt;<span class="built_in">string</span>, BadGuy&gt; badguys = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, BadGuy&gt;();</span><br><span class="line"></span><br><span class="line">        BadGuy bg1 = <span class="keyword">new</span> BadGuy(<span class="string">&quot;Harry&quot;</span>, <span class="number">10</span>);</span><br><span class="line">        BadGuy bg2 = <span class="keyword">new</span> BadGuy(<span class="string">&quot;Tom&quot;</span>, <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        badguys.Add(<span class="string">&quot;Marry&quot;</span>, bg1);</span><br><span class="line">        badguys.Add(<span class="string">&quot;Jerry&quot;</span>, bg2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h1><blockquote>
+<p>Coroutines，Yield 执行，IEnumerator 返回</p>
+<p>按时间间隔执行的函数</p>
+</blockquote>
+<ul>
+<li>IEnumerator 不是 IEnumerable</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// object 向另一个 position 移动的协程</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SomeClass</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> smoothing = <span class="number">1f</span>;</span><br><span class="line">    <span class="keyword">public</span> Transform target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        StartCoroutine(MyCoroutine(target));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">IEnumerator <span class="title">MyCoroutine</span>(<span class="params">Transform target</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 每次更新执行按速率接近</span></span><br><span class="line">        <span class="keyword">while</span> (Vector3.Distance(transform.position, target.position) &gt; <span class="number">0.05f</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            transform.position = Vector3.Lerp(transform.position, target.position, smoothing * Time.deltaTime);</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;  <span class="comment">// 一直执行while，执行一次返回一次null</span></span><br><span class="line">        &#125;</span><br><span class="line">        print(<span class="string">&quot;Reach the Target!&quot;</span>);</span><br><span class="line">        <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">WaitForSeconds</span>(<span class="params"><span class="number">3f</span></span>)</span>;    <span class="comment">// 循环结束后更新执行</span></span><br><span class="line">        print(<span class="string">&quot;MyCoroutine is finished!&quot;</span>);      <span class="comment">// 3s后输出 协程结束</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h1><blockquote>
+<p>Quaternions：x，y，z，w</p>
+<p>欧拉角：围绕 x，y，z 轴旋转</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vector3 relativePos = target.position - transform.position;</span><br><span class="line">Quaternion rotation = Quaternion.LookRotation(relativePo); <span class="comment">// 面向目标旋转</span></span><br><span class="line"></span><br><span class="line">Quaternion current = transform.localRotation;</span><br><span class="line"></span><br><span class="line">transform.localRotation = Quaternion.slerp(current, rotation, Time.deltaTime);</span><br><span class="line"><span class="comment">// 始终向前移动并面向目标，实现轨道效应</span></span><br><span class="line"></span><br><span class="line">transform.rotation = Quaternion.identity;	<span class="comment">// 设置旋转为（0， 0， 0） 无旋转</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>lerp 线性插值：两个四元数均匀插值，始终均匀变化</p>
+</li>
+<li><p>slerp 球形插值：曲线上插值，变化中间加速度，后面越来越缓慢</p>
+</li>
+</ul>
+<hr>
+<h1 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h1><blockquote>
+<p>Delegates</p>
+<p>看做存放函数的容器的变量，处理复杂行为，同时控制多个函数</p>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DelegateTest</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 建立委托</span></span><br><span class="line">    <span class="function"><span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">MultiDelegate</span>()</span>;</span><br><span class="line">    MultiDelegate multiDelegate;    <span class="comment">// 实例化</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        multiDelegate += PowerUp;   <span class="comment">// 加入函数</span></span><br><span class="line">        multiDelegate += TurnRed;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 委托不为空就需要执行</span></span><br><span class="line">        <span class="keyword">if</span> (multiDelegate != <span class="literal">null</span>)</span><br><span class="line">            multiDelegate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 委托包含下面两个函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">PowerUp</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        print(<span class="string">&quot;Orb is Up!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">TurnRed</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        GetComponent&lt;Renderer&gt;().material.color = Color.red;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><blockquote>
+<p>Events 特殊委托，方法（函数）定位到事件</p>
+<p>通过 OnEnable += 将方法订阅到事件，在发生事件时可以调用方法</p>
+<p>通过 OnDisable -= 将方法退订，在事件销毁时停用方法</p>
+</blockquote>
+<ul>
+<li>事件控制</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># EventManager</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventManager</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">ClickAction</span>()</span>;         <span class="comment">// 委托 ClickAction()，订阅的事件无参数且返回为void</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">event</span> ClickAction OnClicked;  <span class="comment">// 事件变量：在发生事件时调用  static 无需实例化</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过GUI创建按钮，按下触发事件 OnClicked（即其订阅的方法）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(Screen.width / <span class="number">2</span> - <span class="number">50</span>, <span class="number">5</span>, <span class="number">100</span>, <span class="number">30</span>), <span class="string">&quot;Click&quot;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (OnClicked != <span class="literal">null</span>)</span><br><span class="line">                OnClicked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>订阅函数1</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 变色效果</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TurnColor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        EventManager.OnClicked += Turn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDisable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        EventManager.OnClicked -= Turn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Turn</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Color col = <span class="keyword">new</span> Color(Random.<span class="keyword">value</span>, Random.<span class="keyword">value</span>, Random.<span class="keyword">value</span>);    <span class="comment">//Color(R, B, G)</span></span><br><span class="line">        GetComponent&lt;Renderer&gt;().material.color = col;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>订阅函数2</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 位移效果</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TeleporScripts</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        EventManager.OnClicked += Teleport; <span class="comment">// 注册方法，无需实例化</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDisable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        EventManager.OnClicked -= Teleport;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Teleport</span>() <span class="comment">// 跳动</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 pos = transform.position;</span><br><span class="line">        pos.y = Random.Range(<span class="number">.3</span>f, <span class="number">1.0f</span>);</span><br><span class="line">        transform.position = pos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>鼠标点击按钮，两个事件同时触发</p>
+</blockquote>
+<hr>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">ExecuteEditMode</span>]		<span class="comment">//脚本不执行也会实现类中效果</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SpinScript</span>: <span class="title">Monobehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 特性限制速度范围，Inspector 速度变成滑动条</span></span><br><span class="line">    [<span class="meta">Range(-100, 100)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> speed = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 特性为变量分类，显示在变量前面</span></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;Player&quot;</span>)</span>]</span><br><span class="line">    GameObject player；    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Print-amp-Debug-log"><a href="#Print-amp-Debug-log" class="headerlink" title="Print &amp; Debug.log"></a>Print &amp; Debug.log</h1><blockquote>
+<ul>
+<li><p>两者都输出到 Console 控制台，属于 UnityEngine 命名空间</p>
+</li>
+<li><p>Debug 是一个密闭的类， Print 是 MonoBehaviour 的一个成员,print 就是 Debug.Log 的一个简单封装</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OutPut</span>: <span class="title">Monobehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">            print(<span class="string">&quot;test Print&quot;</span>);</span><br><span class="line">    		Debug.log(<span class="string">&quot;test Debug&quot;</span>);  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>From：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42351033/article/details/83990499">https://blog.csdn.net/qq_42351033/article/details/83990499</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io">RuiKi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/">https://lrqwww.github.io/2022/08/18/C-Unity%E5%AE%98%E6%96%B9%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lrqwww.github.io" target="_blank">五里霧中</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity3D/">Unity3D</a><a class="post-meta__tags" href="/tags/C/">C#</a></div><div class="post_share"><div class="social-share" data-image="/img/covers/Csharp.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><img class="prev-cover" src="/img/covers/net.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网络编程</div></div></a></div><div class="next-post pull-right"><a href="/2022/07/27/M-Studio%EF%BC%9A%E4%BB%8E%E3%80%8ARobbie%E3%80%8B%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/"><img class="next-cover" src="/img/covers/robbie.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">M_Studio：从《Robbie》学习开发笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/08/06/Tips/" title="Tips"><img class="cover" src="/img/covers/Tips.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-06</div><div class="title">Tips</div></div></a></div><div><a href="/2023/04/13/Unity%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E5%A7%94%E6%89%98/" title="Unity中的事件和委托"><img class="cover" src="/img/covers/event.JPG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-13</div><div class="title">Unity中的事件和委托</div></div></a></div><div><a href="/2023/04/13/Unity%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F/" title="Unity异步加载方式"><img class="cover" src="/img/covers/ayscn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-13</div><div class="title">Unity异步加载方式</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%8A%9F%E8%83%BD08-U%E5%9C%BA%E6%99%AF%E8%BD%AC%E6%8D%A2%E4%B8%8E%E4%BC%A0%E9%80%81/" title="3DRPG游戏开发核心功能08-场景转换与传送"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能08-场景转换与传送</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD02-%E9%BC%A0%E6%A0%87%E6%8E%A7%E5%88%B6%E5%92%8C%E7%9B%B8%E6%9C%BA%E7%89%B9%E6%95%88/" title="3DRPG游戏开发核心功能02-鼠标控制和相机特效"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能02-鼠标控制和相机特效</div></div></a></div><div><a href="/2022/09/05/3DRPG%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD03-%E6%95%8C%E4%BA%BA%E5%8F%8A%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6/" title="3DRPG游戏开发核心功能03-敌人及玩家控制"><img class="cover" src="/img/covers/3DRPG.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">3DRPG游戏开发核心功能03-敌人及玩家控制</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC-Scripts"><span class="toc-number">1.</span> <span class="toc-text">脚本 Scripts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Start-amp-Awake"><span class="toc-number">2.</span> <span class="toc-text">Start &amp; Awake</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Public-amp-Private-amp-Protected"><span class="toc-number">3.</span> <span class="toc-text">Public &amp; Private &amp; Protected</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Updata-amp-FixedUpdata"><span class="toc-number">4.</span> <span class="toc-text">Updata &amp; FixedUpdata</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DeltaTime"><span class="toc-number">5.</span> <span class="toc-text">DeltaTime</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Invoke"><span class="toc-number">6.</span> <span class="toc-text">Invoke</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%82%B9%E7%A7%AF-amp-%E5%8F%89%E7%A7%AF"><span class="toc-number">7.</span> <span class="toc-text">点积 &amp; 叉积</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%BB%84%E4%BB%B6"><span class="toc-number">8.</span> <span class="toc-text">启动组件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E7%94%A8%E5%AF%B9%E8%B1%A1"><span class="toc-number">9.</span> <span class="toc-text">启用对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Translate-amp-Rotate"><span class="toc-number">10.</span> <span class="toc-text">Translate &amp; Rotate</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LookAt"><span class="toc-number">11.</span> <span class="toc-text">LookAt</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Destory"><span class="toc-number">12.</span> <span class="toc-text">Destory</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GetButton-amp-GetKey"><span class="toc-number">13.</span> <span class="toc-text">GetButton &amp; GetKey</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#OnMouseDown"><span class="toc-number">14.</span> <span class="toc-text">OnMouseDown</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Class"><span class="toc-number">15.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Instantiate"><span class="toc-number">16.</span> <span class="toc-text">Instantiate</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-number">17.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE"><span class="toc-number">18.</span> <span class="toc-text">枚举</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Switch"><span class="toc-number">19.</span> <span class="toc-text">Switch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7"><span class="toc-number">20.</span> <span class="toc-text">属性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">21.</span> <span class="toc-text">三目运算符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Static-%E9%9D%99%E6%80%81"><span class="toc-number">22.</span> <span class="toc-text">Static 静态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B"><span class="toc-number">23.</span> <span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF"><span class="toc-number">24.</span> <span class="toc-text">继承</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Overriding"><span class="toc-number">25.</span> <span class="toc-text">Overriding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-number">26.</span> <span class="toc-text">接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Extension-Methods"><span class="toc-number">27.</span> <span class="toc-text">Extension Methods</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">28.</span> <span class="toc-text">命名空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%92%8C%E5%AD%97%E5%85%B8"><span class="toc-number">29.</span> <span class="toc-text">列表和字典</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B"><span class="toc-number">30.</span> <span class="toc-text">协程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0"><span class="toc-number">31.</span> <span class="toc-text">四元数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A7%94%E6%89%98"><span class="toc-number">32.</span> <span class="toc-text">委托</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6"><span class="toc-number">33.</span> <span class="toc-text">事件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">34.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Print-amp-Debug-log"><span class="toc-number">35.</span> <span class="toc-text">Print &amp; Debug.log</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/img/covers/Csharp.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By RuiKi</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    //tex: {
+    //  inlineMath: [ ['$','$'], ["\\(","\\)"]],
+    //  tags: 'ams'
+    //},
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
