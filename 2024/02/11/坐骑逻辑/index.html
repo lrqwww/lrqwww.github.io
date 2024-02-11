@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>坐骑逻辑 | 五里霧中</title><meta name="keywords" content="功能开发"><meta name="author" content="RuiKi"><meta name="copyright" content="RuiKi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="坐骑可以看做装备  通过穿脱装备（加载坐骑资源），PutOn PutOff  通过坐骑的动画状态机切换状态  骑车移动状态RideMoveState切换玩家状态PlayerCtrl.BaseRoleAnim，车子状态切换坐骑对象本身的动画PlayerRide  封装 PlayerRide 坐骑主 PlayerRide 乘坐者 状态，装备和销毁方法挂在 Player身上     状态机基类  控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="坐骑逻辑">
+<meta property="og:url" content="https://lrqwww.github.io/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/index.html">
+<meta property="og:site_name" content="五里霧中">
+<meta property="og:description" content="坐骑可以看做装备  通过穿脱装备（加载坐骑资源），PutOn PutOff  通过坐骑的动画状态机切换状态  骑车移动状态RideMoveState切换玩家状态PlayerCtrl.BaseRoleAnim，车子状态切换坐骑对象本身的动画PlayerRide  封装 PlayerRide 坐骑主 PlayerRide 乘坐者 状态，装备和销毁方法挂在 Player身上     状态机基类  控">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lrqwww.github.io/img/covers/ayscn.jpg">
+<meta property="article:published_time" content="2024-02-11T09:41:31.000Z">
+<meta property="article:modified_time" content="2024-02-11T09:58:01.551Z">
+<meta property="article:author" content="RuiKi">
+<meta property="article:tag" content="功能开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lrqwww.github.io/img/covers/ayscn.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lrqwww.github.io/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '坐骑逻辑',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-02-11 17:58:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/covers/ayscn.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">五里霧中</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">坐骑逻辑</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-11T09:41:31.000Z" title="发表于 2024-02-11 17:41:31">2024-02-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-11T09:58:01.551Z" title="更新于 2024-02-11 17:58:01">2024-02-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">知识总结</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="坐骑逻辑"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<ul>
+<li><p>坐骑可以看做装备</p>
+</li>
+<li><p>通过穿脱装备（加载坐骑资源），PutOn PutOff</p>
+</li>
+<li><p>通过坐骑的动画状态机切换状态</p>
+</li>
+<li><p>骑车移动状态RideMoveState切换<code>玩家状态</code>PlayerCtrl.BaseRoleAnim，车子状态切换<code>坐骑对象本身的动画</code>PlayerRide</p>
+</li>
+<li><p>封装 PlayerRide <code>坐骑主</code> PlayerRide <code>乘坐者</code> 状态，装备和销毁方法挂在 Player身上</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>状态机基类</p>
+<ul>
+<li><p>控制对象 </p>
+</li>
+<li><p>当前枚举 </p>
+</li>
+<li><p>是否进入tag（enter真 exit假） </p>
+</li>
+<li><p>生命周期（enter update lateUpdate Exit）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">CharacterState</span>(<span class="params">eCharState state</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    State = state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>单独状态</p>
+<ul>
+<li><p>生命周期具体行为（可以切换到当前状态的切换动画）</p>
+</li>
+<li><p>（先准备资源（根据状态拼出来资源名 <code>ride_资源编号_zoulu_01</code>） 有了再播放）</p>
+</li>
+<li><p>修改Tag （上一个动画 .?）</p>
+</li>
+<li><p>渐变动作 RoleAim.CrossFade 混合动画）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">RideMoveState</span>()</span></span><br><span class="line"><span class="function">: <span class="title">base</span>(<span class="params">eCharState.RideMove</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io">RuiKi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lrqwww.github.io/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/">https://lrqwww.github.io/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lrqwww.github.io" target="_blank">五里霧中</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91/">功能开发</a></div><div class="post_share"><div class="social-share" data-image="/img/covers/ayscn.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/02/11/TextMeshPro%E5%A4%87%E7%94%A8%E5%AD%97%E4%BD%93/"><img class="prev-cover" src="/img/covers/ayscn.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TextMeshPro备用字体</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/06/Git%E4%BD%BF%E7%94%A8/"><img class="next-cover" src="/img/covers/Git.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Git使用</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">RuiKi</div><div class="author-info__description">这个人很懒，什么都没有留下</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lrqwww" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1124851972@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/11/AssetBundle%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD%E4%B8%8E%E9%87%8A%E6%94%BE/" title="AssetBundle资源加载与释放"><img src="/img/covers/ayscn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AssetBundle资源加载与释放"/></a><div class="content"><a class="title" href="/2024/02/11/AssetBundle%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD%E4%B8%8E%E9%87%8A%E6%94%BE/" title="AssetBundle资源加载与释放">AssetBundle资源加载与释放</a><time datetime="2024-02-11T10:38:36.000Z" title="发表于 2024-02-11 18:38:36">2024-02-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/11/%E9%9F%B3%E9%87%8F%E8%B0%83%E6%95%B4%E4%BC%98%E5%8C%96/" title="音量调整优化"><img src="/img/covers/ayscn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音量调整优化"/></a><div class="content"><a class="title" href="/2024/02/11/%E9%9F%B3%E9%87%8F%E8%B0%83%E6%95%B4%E4%BC%98%E5%8C%96/" title="音量调整优化">音量调整优化</a><time datetime="2024-02-11T10:22:11.000Z" title="发表于 2024-02-11 18:22:11">2024-02-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/11/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="性能优化"><img src="/img/covers/ayscn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="性能优化"/></a><div class="content"><a class="title" href="/2024/02/11/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="性能优化">性能优化</a><time datetime="2024-02-11T10:17:13.000Z" title="发表于 2024-02-11 18:17:13">2024-02-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/11/TextMeshPro%E5%A4%87%E7%94%A8%E5%AD%97%E4%BD%93/" title="TextMeshPro备用字体"><img src="/img/covers/ayscn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TextMeshPro备用字体"/></a><div class="content"><a class="title" href="/2024/02/11/TextMeshPro%E5%A4%87%E7%94%A8%E5%AD%97%E4%BD%93/" title="TextMeshPro备用字体">TextMeshPro备用字体</a><time datetime="2024-02-11T09:43:12.000Z" title="发表于 2024-02-11 17:43:12">2024-02-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/" title="坐骑逻辑"><img src="/img/covers/ayscn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="坐骑逻辑"/></a><div class="content"><a class="title" href="/2024/02/11/%E5%9D%90%E9%AA%91%E9%80%BB%E8%BE%91/" title="坐骑逻辑">坐骑逻辑</a><time datetime="2024-02-11T09:41:31.000Z" title="发表于 2024-02-11 17:41:31">2024-02-11</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/covers/ayscn.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By RuiKi</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    //tex: {
+    //  inlineMath: [ ['$','$'], ["\\(","\\)"]],
+    //  tags: 'ams'
+    //},
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
